@@ -3,6 +3,7 @@ const fs = require("fs");
 const inquirer = require("inquirer");
 const generateGitignore = require("./utils/generateGitignore");
 const generateServer = require("./utils/generateServer");
+const generateConnection = require("./utils/generateConnection");
 
 const setupQuestions = [
   {
@@ -82,6 +83,11 @@ function init() {
     // create server.js in server directory
     fs.writeFile(`./dist/${response.title}/server/server.js`, generateServer(), (err) => {
       console.log("We've got a server! Now let's establish a connection to our database...")
+      if (err) throw err
+  }) 
+    // create connection.js in config directory
+    fs.writeFile(`./dist/${response.title}/server/config/connection.js`, generateConnection(response), (err) => {
+      console.log("Mongoose noises! We've got ourselves a database connection. Onward...")
       if (err) throw err
   }) 
   });
