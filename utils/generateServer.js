@@ -1,6 +1,5 @@
 const generateServer = () => {
-  return `
-const express = require('express');
+  return `const express = require('express');
 const path = require('path');
 
 // import ApolloServer
