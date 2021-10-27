@@ -6,6 +6,9 @@ const generateServer = require("./utils/generateServer");
 const generateConnection = require("./utils/generateConnection");
 const generateUser = require("./utils/generateUser");
 const generateModelsIndex = require("./utils/generateModelsIndex");
+const generateTypeDefs = require("./utils/generateTypeDefs");
+const generateResolvers = require("./utils/generateResolvers");
+const generateSchemasIndex = require("./utils/generateSchemasIndex");
 
 const setupQuestions = [
   {
@@ -62,7 +65,7 @@ function init() {
     const modelsDir = `./dist/${response.title}/server/models`;
     fs.mkdirSync(modelsDir);
     console.log(
-      "A models directory has been added to the server directory. The build marches on..."
+      "A models directory has been added to the server directory. We march on..."
     ); 
     // create schemas directory
     const schemasDir = `./dist/${response.title}/server/schemas`;
@@ -100,6 +103,21 @@ function init() {
     // create index.js in models directory
     fs.writeFile(`./dist/${response.title}/server/models/index.js`, generateModelsIndex(), (err) => {
       console.log("While we're at it, let's get that User model imported into and exported from an index.js file...")
+      if (err) throw err
+  }) 
+    // create typeDefs.js in schemas directory
+    fs.writeFile(`./dist/${response.title}/server/schemas/typeDefs.js`, generateTypeDefs(), (err) => {
+      console.log("That User model could probably do with some typeDefs. Let's give you a head start on writing them...")
+      if (err) throw err
+  }) 
+    // create resolvers.js in schemas directory
+    fs.writeFile(`./dist/${response.title}/server/schemas/resolvers.js`, generateResolvers(), (err) => {
+      console.log('A typeDef walks into a bar. The bartender asks, "Where are your resolvers?" Oh, they\'re right here... #AntiJoke')
+      if (err) throw err
+  }) 
+    // create index.js in schemas directory
+    fs.writeFile(`./dist/${response.title}/server/schemas/index.js`, generateSchemasIndex(), (err) => {
+      console.log("An index.js in a schemas folder never hurt anyone—at least not that we know of...")
       if (err) throw err
   }) 
   });
