@@ -4,6 +4,8 @@ const inquirer = require("inquirer");
 const generateGitignore = require("./utils/generateGitignore");
 const generateServer = require("./utils/generateServer");
 const generateConnection = require("./utils/generateConnection");
+const generateUser = require("./utils/generateUser");
+const generateModelsIndex = require("./utils/generateModelsIndex");
 
 const setupQuestions = [
   {
@@ -88,6 +90,16 @@ function init() {
     // create connection.js in config directory
     fs.writeFile(`./dist/${response.title}/server/config/connection.js`, generateConnection(response), (err) => {
       console.log("Mongoose noises! We've got ourselves a database connection. Onward...")
+      if (err) throw err
+  }) 
+    // create User.js in models directory
+    fs.writeFile(`./dist/${response.title}/server/models/User.js`, generateUser(), (err) => {
+      console.log("Creating a User model to make things easy for you...")
+      if (err) throw err
+  }) 
+    // create index.js in models directory
+    fs.writeFile(`./dist/${response.title}/server/models/index.js`, generateModelsIndex(), (err) => {
+      console.log("While we're at it, let's get that User model imported into and exported from an index.js file...")
       if (err) throw err
   }) 
   });
