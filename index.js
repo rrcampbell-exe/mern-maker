@@ -198,20 +198,18 @@ function init() {
         if (err) throw err;
       }
     );
-    // test exec functionality
-    // setTimeout(() => {
-      exec(`code dist/${dirName}/`, (error, stdout, stderr) => {
-        if (error) {
-          console.log(`error: ${error.message}`);
-          return;
-        }
-        if (stderr) {
-          console.log(`stderr: ${stderr}`);
-          return;
-        }
-        console.log(`stdout: ${stdout}`);
-      });
-    // }, 5000);
+    // navigate to project directory
+    exec(`cd dist/${dirName} && npm init -y && cd server && npm init -y`, (error, stdout, stderr) => {
+      if (error) {
+        console.log(`error: ${error.message}`);
+        return;
+      }
+      if (stderr) {
+        console.log(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    });
   });
 }
 
