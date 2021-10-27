@@ -1,8 +1,7 @@
 // generating .gitignore for root and server directories
 
 const generateGitignore = () => {
-  return `
-  # Logs
+  return `# Logs
 logs
 *.log
 npm-debug.log*

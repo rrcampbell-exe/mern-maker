@@ -4,17 +4,16 @@ const generateConnection = (response) => {
   dbName = response.title.toLowerCase()
   dbName = dbName.replace(/\s+/g, '-');
 
-  return `
-  const mongoose = require('mongoose');
+  return `const mongoose = require('mongoose');
 
-  mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/${dbName}', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false
-  });
-  
-  module.exports = mongoose.connection; 
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/${dbName}', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false
+});
+
+module.exports = mongoose.connection; 
   `
 }
 
