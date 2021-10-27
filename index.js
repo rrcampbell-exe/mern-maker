@@ -9,6 +9,8 @@ const generateModelsIndex = require("./utils/generateModelsIndex");
 const generateTypeDefs = require("./utils/generateTypeDefs");
 const generateResolvers = require("./utils/generateResolvers");
 const generateSchemasIndex = require("./utils/generateSchemasIndex");
+const generateSeeds = require("./utils/generateSeeds");
+const generateAuth = require("./utils/generateAuth");
 
 const setupQuestions = [
   {
@@ -79,11 +81,11 @@ function init() {
     console.log(
       "Your server's seeds now have a home in the seeders directory! Can't wait to see what you grow..."
     ); 
-    // create util directory
-    const utilDir = `./dist/${response.title}/server/util`;
-    fs.mkdirSync(utilDir);
+    // create utils directory
+    const utilsDir = `./dist/${response.title}/server/utils`;
+    fs.mkdirSync(utilsDir);
     console.log(
-      "Take this util directory. It's dangerous to go alone..."
+      "Take this utils directory. It's dangerous to go alone..."
     );
     // create server.js in server directory
     fs.writeFile(`./dist/${response.title}/server/server.js`, generateServer(), (err) => {
@@ -118,6 +120,16 @@ function init() {
     // create index.js in schemas directory
     fs.writeFile(`./dist/${response.title}/server/schemas/index.js`, generateSchemasIndex(), (err) => {
       console.log("An index.js in a schemas folder never hurt anyone—at least not that we know of...")
+      if (err) throw err
+  }) 
+    // create seeds.js in seeders directory
+    fs.writeFile(`./dist/${response.title}/server/seeders/seeds.js`, generateSeeds(), (err) => {
+      console.log("That seeders folder is looking kind of lonely. Let's get you started with some sample user seeds...")
+      if (err) throw err
+  }) 
+    // create auth.js in utils directory
+    fs.writeFile(`./dist/${response.title}/server/utils/auth.js`, generateAuth(), (err) => {
+      console.log('"WHAT ARE YOUR LOGIN CREDENTIALS?" <-- This is what your newly created auth.js will ask of prospective users (though hopefully without all the yelling)...')
       if (err) throw err
   }) 
   });
