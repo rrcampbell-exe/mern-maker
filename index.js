@@ -12,6 +12,7 @@ const generateResolvers = require("./utils/generateResolvers");
 const generateSchemasIndex = require("./utils/generateSchemasIndex");
 const generateSeeds = require("./utils/generateSeeds");
 const generateAuth = require("./utils/generateAuth");
+const generateEnv = require("./utils/generateEnv");
 
 const setupQuestions = [
   {
@@ -101,6 +102,10 @@ function init() {
     const utilsDir = `./dist/${dirName}/server/utils`;
     fs.mkdirSync(utilsDir);
     console.log("Take this utils directory. It's dangerous to go alone...");
+    // create client directory
+    // const clientDir = `./dist/${dirName}/client`;
+    // fs.mkdirSync(clientDir);
+    // console.log("Behold! Tremble before this client directory. It will come in handy later, I promise...");
     // create server.js in server directory
     fs.writeFile(
       `./dist/${dirName}/server/server.js`,
@@ -198,18 +203,28 @@ function init() {
         if (err) throw err;
       }
     );
+    // create .env in client directory to foil Mac-related errors on launch of React
+    // fs.writeFile(`./dist/${dirName}/client/.env`, generateEnv(), (err) => {
+    //   console.log(
+    //     "Mac users will be grateful for the inclusion of this .env in the client directory, we promise..."
+    //   );
+    //   if (err) throw err;
+    // });
     // navigate to project directory
-    exec(`cd dist/${dirName} && npm init -y && cd server && npm init -y`, (error, stdout, stderr) => {
-      if (error) {
-        console.log(`error: ${error.message}`);
-        return;
+    exec(
+      `cd dist/${dirName} && npm init -y && npm i concurrently -D && npx create-react-app client && cd server && npm init -y && npm i apollo-server-express bcrypt express faker graphql jsonwebtoken mongoose`,
+      (error, stdout, stderr) => {
+        if (error) {
+          console.log(`error: ${error.message}`);
+          return;
+        }
+        if (stderr) {
+          console.log(`stderr: ${stderr}`);
+          return;
+        }
+        console.log(`stdout: ${stdout}`);
       }
-      if (stderr) {
-        console.log(`stderr: ${stderr}`);
-        return;
-      }
-      console.log(`stdout: ${stdout}`);
-    });
+    );
   });
 }
 
