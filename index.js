@@ -16,7 +16,7 @@ const generateSchemasIndex = require("./utils/generateSchemasIndex");
 const generateSeeds = require("./utils/generateSeeds");
 const generateAuth = require("./utils/generateAuth");
 const generateEnv = require("./utils/generateEnv");
-const generateRootJSON = require("./utils/generateRootJSON");
+const generateJSON = require("./utils/generateJSON");
 
 const setupQuestions = [
   {
@@ -42,11 +42,9 @@ function relay() {
     );
     if (err) throw err;
 
-  async function readFile(filePath) {
+  async function updateRootJSON(filePath) {
     try {
       const data = await fsPromises.readFile(filePath);
-      // console.log("HERE'S THAT DATA AS A STRING:", data.toString());
-
       rootJSON = data.toString();
       rootJSON = rootJSON.replace(`"scripts": {`, `"scripts": {
     "start": "node server/server.js",
@@ -54,18 +52,16 @@ function relay() {
     "install": "cd server && npm i && cd ../client && npm i",
     "seed": "cd server && npm run seed",
     "build": "cd client && npm run build",`)
-
-    // rootJSON = rootJSON.replace(`"test": "echo \"Error: no test specified\" && exit 1"`, "")
     
     console.log("Here's your modified JSON file:", rootJSON)
         
-    // could write a package.json with rootJSON (a string), which would overwrite previous package
+    // rite a package.json with rootJSON, overwriting previous package
     fs.writeFile(
       `./dist/${dirName}/package.json`,
-      generateRootJSON(rootJSON),
+      generateJSON(rootJSON),
       (err) => {
         console.log(
-          "We've taken the liberty of updating your root directory's package.json. You'll thank us later..."
+          "We've taken the liberty of updating your root directory's package.json. You'll thank us later. Onto the next one!"
         );
         if (err) throw err;
       }
@@ -76,7 +72,13 @@ function relay() {
     }
   }
 
-  readFile(`./dist/${dirName}/package.json`)
+  // above this, write two functions (updateServerJSON and updateClientJSON) to read and overwrite server and client JSON
+
+  // run files to update package.json in respective directories
+  updateRootJSON(`./dist/${dirName}/package.json`)
+  // updateServerJSON(`./dist/${dirName}/server/package.json`)
+  // updateClientJSON(`./dist/${dirName}/client/package.json`)
+
 
   });
 }
