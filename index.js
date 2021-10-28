@@ -1,7 +1,9 @@
-// require access to file system, import inquirer package
+// require access to file system, import inquirer package, exec from child_process
 const fs = require("fs");
 const exec = require("child_process").exec;
 const inquirer = require("inquirer");
+
+// import functions from utils
 const generateGitignore = require("./utils/generateGitignore");
 const generateServer = require("./utils/generateServer");
 const generateConnection = require("./utils/generateConnection");
@@ -30,6 +32,19 @@ const setupQuestions = [
   },
 ];
 
+function relay() {
+  // create .env in client directory to foil Mac-related errors on launch of React
+  fs.writeFile(`./dist/${dirName}/client/.env`, generateEnv(), (err) => {
+    console.log(
+      "Mac users will be grateful for the inclusion of this .env in the client directory, we promise..."
+    );
+    if (err) throw err;
+
+  // go into package.json files and update them with necessary scripts for out of box functionality
+
+  });
+}
+
 // fn to initialize question prompts, create project on run of node index
 function init() {
   return inquirer.prompt(setupQuestions).then((response) => {
@@ -37,10 +52,18 @@ function init() {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
     }
-    // create root directory
+
+    const formatBool = /[^A-Za-z0-9\-_\s]/.test(response.title)
+    console.log("FORMATBOOL IS THE FOLLOWING:", formatBool)
+    if (formatBool) {
+      return (console.log("Project name can only feature alphanumerics, hyphens, underscores, or spaces. Please try again."))
+    }
+
     // js to format db name based on project name
     dirName = response.title.toLowerCase();
     dirName = dirName.replace(/\s+/g, "-");
+
+    // create root directory
     const rootDir = `./dist/${dirName}`;
     fs.mkdirSync(rootDir);
     console.log(
@@ -102,10 +125,6 @@ function init() {
     const utilsDir = `./dist/${dirName}/server/utils`;
     fs.mkdirSync(utilsDir);
     console.log("Take this utils directory. It's dangerous to go alone...");
-    // create client directory
-    // const clientDir = `./dist/${dirName}/client`;
-    // fs.mkdirSync(clientDir);
-    // console.log("Behold! Tremble before this client directory. It will come in handy later, I promise...");
     // create server.js in server directory
     fs.writeFile(
       `./dist/${dirName}/server/server.js`,
@@ -203,17 +222,11 @@ function init() {
         if (err) throw err;
       }
     );
-    // create .env in client directory to foil Mac-related errors on launch of React
-    // fs.writeFile(`./dist/${dirName}/client/.env`, generateEnv(), (err) => {
-    //   console.log(
-    //     "Mac users will be grateful for the inclusion of this .env in the client directory, we promise..."
-    //   );
-    //   if (err) throw err;
-    // });
     // navigate to project directory
     exec(
-      `cd dist/${dirName} && npm init -y && npm i concurrently -D && npx create-react-app client && cd server && npm init -y && npm i apollo-server-express bcrypt express faker graphql jsonwebtoken mongoose`,
+      `cd dist/${dirName} && npm init -y && npm i concurrently -D && npx create-react-app client && cd server && npm init -y && npm i apollo-server-express bcrypt express faker graphql jsonwebtoken mongoose && cd ../../../ && node relay`,
       (error, stdout, stderr) => {
+        relay()
         if (error) {
           console.log(`error: ${error.message}`);
           return;
