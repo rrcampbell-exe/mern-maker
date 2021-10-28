@@ -1,5 +1,6 @@
 // require access to file system, import inquirer package, exec from child_process
 const fs = require("fs");
+const fsPromises = require("fs").promises;
 const exec = require("child_process").exec;
 const inquirer = require("inquirer");
 
@@ -15,6 +16,7 @@ const generateSchemasIndex = require("./utils/generateSchemasIndex");
 const generateSeeds = require("./utils/generateSeeds");
 const generateAuth = require("./utils/generateAuth");
 const generateEnv = require("./utils/generateEnv");
+const generateRootJSON = require("./utils/generateRootJSON");
 
 const setupQuestions = [
   {
@@ -40,7 +42,41 @@ function relay() {
     );
     if (err) throw err;
 
-  // go into package.json files and update them with necessary scripts for out of box functionality
+  async function readFile(filePath) {
+    try {
+      const data = await fsPromises.readFile(filePath);
+      // console.log("HERE'S THAT DATA AS A STRING:", data.toString());
+
+      rootJSON = data.toString();
+      rootJSON = rootJSON.replace(`"scripts": {`, `"scripts": {
+    "start": "node server/server.js",
+    "develop": "concurrently \\"cd server && npm run watch\\" \\"cd client && npm start\\"",
+    "install": "cd server && npm i && cd ../client && npm i",
+    "seed": "cd server && npm run seed",
+    "build": "cd client && npm run build",`)
+
+    // rootJSON = rootJSON.replace(`"test": "echo \"Error: no test specified\" && exit 1"`, "")
+    
+    console.log("Here's your modified JSON file:", rootJSON)
+        
+    // could write a package.json with rootJSON (a string), which would overwrite previous package
+    fs.writeFile(
+      `./dist/${dirName}/package.json`,
+      generateRootJSON(rootJSON),
+      (err) => {
+        console.log(
+          "We've taken the liberty of updating your root directory's package.json. You'll thank us later..."
+        );
+        if (err) throw err;
+      }
+    );
+
+    } catch (error) {
+      console.error(`Got an error trying to read the file: ${error.message}`);
+    }
+  }
+
+  readFile(`./dist/${dirName}/package.json`)
 
   });
 }
@@ -54,7 +90,7 @@ function init() {
     }
 
     const formatBool = /[^A-Za-z0-9\-_\s]/.test(response.title)
-    console.log("FORMATBOOL IS THE FOLLOWING:", formatBool)
+
     if (formatBool) {
       return (console.log("Project name can only feature alphanumerics, hyphens, underscores, or spaces. Please try again."))
     }
@@ -224,7 +260,7 @@ function init() {
     );
     // navigate to project directory
     exec(
-      `cd dist/${dirName} && npm init -y && npm i concurrently -D && npx create-react-app client && cd server && npm init -y && npm i apollo-server-express bcrypt express faker graphql jsonwebtoken mongoose && cd ../../../ && node relay`,
+      `cd dist/${dirName} && npm init -y && npm i concurrently -D && npx create-react-app client && cd server && npm init -y && npm i apollo-server-express bcrypt express faker graphql jsonwebtoken mongoose`,
       (error, stdout, stderr) => {
         relay()
         if (error) {
