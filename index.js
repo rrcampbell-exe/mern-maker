@@ -52,10 +52,8 @@ function relay() {
     "install": "cd server && npm i && cd ../client && npm i",
     "seed": "cd server && npm run seed",
     "build": "cd client && npm run build",`)
-    
-    console.log("Here's your modified JSON file:", rootJSON)
         
-    // rite a package.json with rootJSON, overwriting previous package
+    // write a package.json with rootJSON, overwriting previous package
     fs.writeFile(
       `./dist/${dirName}/package.json`,
       generateJSON(rootJSON),
@@ -72,13 +70,36 @@ function relay() {
     }
   }
 
-  // above this, write two functions (updateServerJSON and updateClientJSON) to read and overwrite server and client JSON
+  async function updateServerJSON(filePath) {
+    try {
+      const data = await fsPromises.readFile(filePath);
+      serverJSON = data.toString();
+      serverJSON = serverJSON.replace(`"scripts": {`, `"scripts": {
+    "watch": "nodemon",
+    "seed": "node seeders/seeds.js",`)
+        
+    // write a package.json with serverJSON, overwriting previous package
+    fs.writeFile(
+      `./dist/${dirName}/server/package.json`,
+      generateJSON(serverJSON),
+      (err) => {
+        console.log(
+          "Hooray! Your server's package.json has also been updated. What a time to be alive."
+        );
+        if (err) throw err;
+      }
+    );
+
+    } catch (error) {
+      console.error(`Got an error trying to read the file: ${error.message}`);
+    }
+  }
 
   // run files to update package.json in respective directories
   updateRootJSON(`./dist/${dirName}/package.json`)
-  // updateServerJSON(`./dist/${dirName}/server/package.json`)
-  // updateClientJSON(`./dist/${dirName}/client/package.json`)
+  updateServerJSON(`./dist/${dirName}/server/package.json`)
 
+  setTimeout(() => {console.log(`The end! Your full stack MERN project template can be found in ./dist/${dirName}/. Copy this directory to your preferred location on your local device and, from its root directory, use shell command npm run develop to test it out!`)}, 1000)
 
   });
 }
@@ -262,7 +283,7 @@ function init() {
     );
     // navigate to project directory
     exec(
-      `cd dist/${dirName} && npm init -y && npm i concurrently -D && npx create-react-app client && cd server && npm init -y && npm i apollo-server-express bcrypt express faker graphql jsonwebtoken mongoose`,
+      `cd dist/${dirName} && npm init -y && npm i concurrently -D && npx create-react-app client && cd server && npm init -y && npm i apollo-server-express bcrypt express faker graphql jsonwebtoken mongoose && npm i nodemon -D`,
       (error, stdout, stderr) => {
         relay()
         if (error) {
