@@ -1,5 +1,5 @@
-function generateRootJSON(data) {
+function generateJSON(data) {
   return data
 }
 
-module.exports = generateRootJSON;
+module.exports = generateJSON;
