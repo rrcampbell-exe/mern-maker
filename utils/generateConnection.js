@@ -8,9 +8,7 @@ const generateConnection = (response) => {
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/${dbName}', {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: false
+  useUnifiedTopology: true
 });
 
 module.exports = mongoose.connection; 
