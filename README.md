@@ -17,7 +17,7 @@ An application that generates full stack MERN project templates based on user in
 To install this app locally, clone it to your device.
 
 ## ⌨️ Usage
-With the app open in your IDE, run `node index` from the root directory and answer the prompts provided.
+With the app open in your IDE, run `npm start` or `node index` from the root directory and answer the prompts provided.
 
 Once you have answered the prompts, MERN Maker gets to work. **Please be patient as the MERN Maker builds your project.** 
 
