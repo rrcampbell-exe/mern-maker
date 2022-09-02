@@ -12,4 +12,17 @@ export const setupQuestions = [
       }
     },
   },
+  {
+    type: "confirm",
+    name: "isOnlyFE",
+    message: "Does your project require a front-end only?",
+    validate: (isOnlyFE) => {
+      if (isOnlyFE) {
+        return true;
+      } else {
+        console.log("Just seeing what happens here.");
+        return false;
+      }
+    },
+  },
 ];

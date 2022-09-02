@@ -5,6 +5,22 @@ import {
   generateJSON
 } from './generators.js'
 
+export const writePkgJsonScriptsFE = (dirName) => {
+  fs.writeFile(`./dist/${dirName}/.env`, generateEnv(), (err) => {
+    console.log(
+      "Mac users will be grateful for the inclusion of this .env in the client directory, we promise..."
+    );
+    if (err) throw err;
+  })
+  setTimeout(() => {console.log(`
+
+The end! Your front-end project template can be found in ./dist/${dirName}/.
+  
+Copy this directory to your preferred location on your local device and, from its root directory, use shell command npm run start to test it out!
+
+`)}, 1000)
+}
+
 export const writePkgJsonScripts = (dirName) => {
   // create .env in client directory to foil Mac-related errors on launch of React
   fs.writeFile(`./dist/${dirName}/client/.env`, generateEnv(), (err) => {
