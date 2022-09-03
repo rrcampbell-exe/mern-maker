@@ -13,16 +13,12 @@ export const setupQuestions = [
     },
   },
   {
-    type: "confirm",
-    name: "isOnlyFE",
-    message: "Does your project require a front-end only?",
-    validate: (isOnlyFE) => {
-      if (isOnlyFE) {
-        return true;
-      } else {
-        console.log("Just seeing what happens here.");
-        return false;
-      }
-    },
-  },
+    type: "list",
+    name: "projectType",
+    message: "Which type of template does this project require?",
+    choices: [
+      'Front-End Only (React)',
+      'Front-End, Server, and Database'
+    ]
+  }
 ];

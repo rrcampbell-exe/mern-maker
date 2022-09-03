@@ -53,8 +53,9 @@ export const init = () => {
       );
       if (err) throw err;
     });
-
-    const isOnlyFE = response.isOnlyFE
+    
+    let isOnlyFE
+    response.projectType === 'Front-End Only (React)' ? isOnlyFE = true : isOnlyFE = false
 
     if (!isOnlyFE) {
       // create server directory
