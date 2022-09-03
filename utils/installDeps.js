@@ -1,14 +1,20 @@
 import { exec } from "child_process";
-import { writePkgJsonScripts } from "./writePkgJsonScripts.js"
+import { writePkgJsonScripts, writePkgJsonScriptsFE } from "./writePkgJsonScripts.js"
 
 
 
 // navigate to project directory
-export const installDeps = (dirName) => {
+export const installDeps = (dirName, isOnlyFE) => {
+  let pkgInstallCmd
+  if (isOnlyFE) {
+    pkgInstallCmd = `cd dist && npx create-react-app ${dirName}`
+  } else {
+    pkgInstallCmd = `cd dist/${dirName} && npm init -y && npm i concurrently -D && npx create-react-app client && cd server && npm init -y && npm i apollo-server-express bcrypt express faker graphql jsonwebtoken mongoose && npm i nodemon -D`
+  }
   exec(
-    `cd dist/${dirName} && npm init -y && npm i concurrently -D && npx create-react-app client && cd server && npm init -y && npm i apollo-server-express bcrypt express faker graphql jsonwebtoken mongoose && npm i nodemon -D`,
+    pkgInstallCmd,
     (error, stdout, stderr) => {
-      writePkgJsonScripts(dirName)
+      isOnlyFE ? writePkgJsonScriptsFE(dirName) : writePkgJsonScripts(dirName)
       if (error) {
         console.log(`error: ${error.message}`);
         return;

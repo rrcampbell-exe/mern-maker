@@ -12,4 +12,13 @@ export const setupQuestions = [
       }
     },
   },
+  {
+    type: "list",
+    name: "projectType",
+    message: "Which type of template does this project require?",
+    choices: [
+      'Front-End Only (React)',
+      'Front-End, Server, and Database'
+    ]
+  }
 ];
