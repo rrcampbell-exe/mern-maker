@@ -1,5 +1,5 @@
 import { exec } from "child_process";
-import { writePkgJsonScripts, writePkgJsonScriptsFE } from "./writePkgJsonScripts.js"
+import { writePkgJsonScripts } from "./writePkgJsonScripts.js"
 
 
 

@@ -31,7 +31,7 @@ export const init = () => {
     const formatBool = /[^A-Za-z0-9\-_\s]/.test(response.title)
 
     if (formatBool) {
-      return (console.log("Project name can only feature alphanumerics, hyphens, underscores, or spaces. Please try again."))
+      return (console.log("❌ Project name can only feature alphanumerics, hyphens, underscores, or spaces. Please try again."))
     }
 
     // js to format db name based on project name
@@ -42,14 +42,14 @@ export const init = () => {
     const rootDir = `./dist/${dirName}`;
     fs.mkdirSync(rootDir);
     console.log(
-      "The root directory for " +
+      "📁 The root directory for " +
         response.title +
         " has been generated! Creating files..."
     );
     // add .gitignore to root directory
     fs.writeFile(`./dist/${dirName}/.gitignore`, generateGitignore(), (err) => {
       console.log(
-        "A .gitignore has been added to the root directory. Let's see what we have to create next..."
+        "🗃️ A .gitignore has been added to the root directory. Let's see what we have to create next..."
       );
       if (err) throw err;
     });
@@ -59,14 +59,12 @@ export const init = () => {
     response.projectType === 'React Front-End with Express Server' ? isFEandServer = true : isFEandServer = false
     response.projectType === 'React Front-End, Express Server, and Database' ? isFEwithServerAndDB = true : isFEwithServerAndDB = false
 
-    // TODO: then, within each function, update to behave conditionally based on whichever is true
-
     if (!isOnlyFE) {
       // create server directory
       const serverDir = `./dist/${dirName}/server`;
       fs.mkdirSync(serverDir);
       console.log(
-        "The server directory for " +
+        "🛠️ The server directory for " +
           response.title +
           " has been generated! Building server..."
       );
@@ -76,7 +74,7 @@ export const init = () => {
         generateGitignore(),
         (err) => {
           console.log(
-            "A .gitignore has been added to the server directory. Continuing server build..."
+            "💪 A .gitignore has been added to the server directory. Continuing server build..."
           );
           if (err) throw err;
         }
@@ -86,30 +84,30 @@ export const init = () => {
         const configDir = `./dist/${dirName}/server/config`;
         fs.mkdirSync(configDir);
         console.log(
-          "A config directory has been added to the server directory. The build continues..."
+          "🧑‍🔧 A config directory has been added to the server directory. The build continues..."
         );
         // create models directory
         const modelsDir = `./dist/${dirName}/server/models`;
         fs.mkdirSync(modelsDir);
         console.log(
-          "A models directory has been added to the server directory. We march on..."
+          "📸 A models directory has been added to the server directory. We march on..."
         );
         // create schemas directory
         const schemasDir = `./dist/${dirName}/server/schemas`;
         fs.mkdirSync(schemasDir);
         console.log(
-          "We've got a schemas directory in the server directory! The grind continues..."
+          "🕵️ We've got a schemas directory in the server directory! The grind continues..."
         );
         // create seeders directory
         const seedersDir = `./dist/${dirName}/server/seeders`;
         fs.mkdirSync(seedersDir);
         console.log(
-          "Your server's seeds now have a home in the seeders directory! Can't wait to see what you grow..."
+          "🌱 Your server's seeds now have a home in the seeders directory! Can't wait to see what you grow..."
         );
         // create utils directory
         const utilsDir = `./dist/${dirName}/server/utils`;
         fs.mkdirSync(utilsDir);
-        console.log("Take this utils directory. It's dangerous to go alone...");
+        console.log("⚔️ Take this utils directory. It's dangerous to go alone...");
       }
       // create server.js in server directory
       fs.writeFile(
@@ -117,7 +115,7 @@ export const init = () => {
         generateServer(isFEwithServerAndDB),
         (err) => {
           console.log(
-            "We've got a server! Now let's establish a connection to our database..."
+            "🌐 We've got a server! The grind continues..."
           );
           if (err) throw err;
         }
@@ -129,8 +127,11 @@ export const init = () => {
           generateConnection(response),
           (err) => {
             console.log(
-              "Mongoose noises! We've got ourselves a database connection. Onward..."
+              "🦦 Mongoose noises! We've got ourselves a database connection. Onward..."
             );
+            console.log(
+              "🤷‍♂️ And yes, the Mongoose message features an emoji of an otter. What about it? Are you under the impression there's a mongoose emoji?"
+            )
             if (err) throw err;
           }
         );
@@ -139,7 +140,7 @@ export const init = () => {
           `./dist/${dirName}/server/models/User.js`,
           generateUser(),
           (err) => {
-            console.log("Creating a User model to make things easy for you...");
+            console.log("🧑‍🤝‍🧑 Creating a User model to make things easy for you...");
             if (err) throw err;
           }
         );
@@ -149,7 +150,7 @@ export const init = () => {
           generateModelsIndex(),
           (err) => {
             console.log(
-              "While we're at it, let's get that User model imported into and exported from an index.js file..."
+              "↔️ While we're at it, let's get that User model imported into and exported from an index.js file..."
             );
             if (err) throw err;
           }
@@ -160,7 +161,7 @@ export const init = () => {
           generateTypeDefs(),
           (err) => {
             console.log(
-              "That User model could probably do with some typeDefs. Let's give you a head start on writing them..."
+              "📚 That User model could probably do with some typeDefs. Let's give you a head start on writing them..."
             );
             if (err) throw err;
           }
@@ -171,7 +172,7 @@ export const init = () => {
           generateResolvers(),
           (err) => {
             console.log(
-              'A typeDef walks into a bar. The bartender asks, "Where are your resolvers?" Oh, they\'re right here... #AntiJoke'
+              '🍺 A typeDef walks into a bar. The bartender asks, "Where are your resolvers?" Oh, they\'re right here... #AntiJoke'
             );
             if (err) throw err;
           }
@@ -182,7 +183,7 @@ export const init = () => {
           generateSchemasIndex(),
           (err) => {
             console.log(
-              "An index.js in a schemas folder never hurt anyone—at least not that we know of..."
+              "🗄️ An index.js in a schemas folder never hurt anyone—at least not that we know of..."
             );
             if (err) throw err;
           }
@@ -193,7 +194,7 @@ export const init = () => {
           generateSeeds(),
           (err) => {
             console.log(
-              "That seeders folder is looking kind of lonely. Let's get you started with some sample user seeds..."
+              "🌳 That seeders folder is looking kind of lonely. Let's get you started with some sample user seeds..."
             );
             if (err) throw err;
           }
@@ -204,13 +205,13 @@ export const init = () => {
           generateAuth(),
           (err) => {
             console.log(
-              '"WHAT ARE YOUR LOGIN CREDENTIALS?" <-- This is what your newly created auth.js will ask of prospective users (though hopefully without all the yelling)...'
+              '💢 "WHAT ARE YOUR LOGIN CREDENTIALS?" <-- This is what your newly created auth.js will ask of prospective users (though hopefully without all the yelling)...'
             );
             if (err) throw err;
           }
         );
       }
-      installDeps(dirName, isOnlyFE, isFEandServer)
+      // installDeps(dirName, isOnlyFE, isFEandServer)
     }
     installDeps(dirName, isOnlyFE, isFEandServer)
   });

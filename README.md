@@ -29,11 +29,11 @@ The console will confirm when the build is complete.
 
 Once the build is complete, visit the `dist` directory and relocate the folder with your project's name to your desired location.
 
-Then, from the root of your project, you may optionally run `npm run seed` to seed your database with the provided user seeds.
+If you chose to create a project with a database included, then, from the root of your project, you may optionally run `npm run seed` to seed your database with the provided user seeds.
 
-To run your server and your React front end, use command `npm run develop` while in your project's root directory.
+To run projects that feature a server, use command `npm run develop` while in your project's root directory. Otherwise, from the same directory, use command `npm run start` to initialize your project.
 
-The frontend will then run on `localhost:3000`, with the ability to interface with your database via GraphQL queries in the Apollo Client running on `localhost:3001/graphql`.
+The front end will then run on `localhost:3000`, with the ability to interface with your optional database via GraphQL queries in the Apollo Client running on `localhost:3001/graphql`.
 
  ## ✨ Features
  - Inquirer

@@ -112,7 +112,7 @@ export const generateServer = (isFEwithServerAndDB) => {
   
   db.once('open', () => {
     app.listen(PORT, () => {
-      console.log('🏭 Your mern-maker server is listening on ' + PORT + 🌐');
+      console.log('🏭 Your mern-maker server is listening on ' + PORT + ' 🌐');
     });
   });
     `
