@@ -17,8 +17,9 @@ export const setupQuestions = [
     name: "projectType",
     message: "Which type of template does this project require?",
     choices: [
-      'Front-End Only (React)',
-      'Front-End, Server, and Database'
+      'React Front-End Only',
+      'React Front-End with Express Server',
+      'React Front-End, Express Server, and Database'
     ]
   }
 ];
